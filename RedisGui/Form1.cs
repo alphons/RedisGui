@@ -2,8 +2,9 @@
 using StackExchange.Redis;
 using System.Diagnostics;
 using System.Net;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
-#nullable enable
 
 namespace RedisGui
 {
@@ -80,10 +81,36 @@ namespace RedisGui
 			if (e.Node == null)
 				return;
 
-			RedisKey key = new RedisKey(e.Node.Text);
+			var key = new RedisKey(e.Node.Text);
+
+			if (this.db == null)
+				return;
+
+			if (e.Node.Parent == null)
+				return;
+
+			if (!db.KeyExists(key))
+			{
+				e.Node.Remove();
+				return;
+			}
 
 			ShowValue(key);
 
+		}
+
+		public static string PrettyPrintJson(string json)
+		{
+			try
+			{
+				var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
+				var options = new JsonSerializerOptions { WriteIndented = true };
+				return JsonSerializer.Serialize(jsonElement, options);
+			}
+			catch
+			{
+				return json;
+			}
 		}
 
 		private void ShowValue(RedisKey key)
@@ -92,6 +119,7 @@ namespace RedisGui
 			this.lblKey.Text = "";
 
 			this.listView1.Items.Clear();
+			this.txtJson.Clear();
 
 			if (this.db == null)
 				return;
@@ -113,14 +141,19 @@ namespace RedisGui
 				case RedisType.Hash:
 					foreach (var entry in db.HashGetAll(key))
 					{
-						
+
 						var val = entry.Value.ToString();
 						var name = entry.Name.ToString();
 
 						if (name.Contains("absexp") && val != "-1")
 							val = new DateTime(long.Parse(val)).ToString();
 						if (name.Contains("sldexp") && val != "-1")
-							val = TimeSpan.FromMilliseconds(long.Parse(val)/10000).ToString();
+							val = TimeSpan.FromMilliseconds(long.Parse(val) / 10000).ToString();
+
+						if (val.StartsWith('{') && val.EndsWith('}'))
+						{
+							this.txtJson.Text = Regex.Unescape(PrettyPrintJson(val));
+						}
 
 						this.listView1.Items.Add(new ListViewItem([entry.Name.ToString(), val]));
 					}
@@ -152,6 +185,6 @@ namespace RedisGui
 
 		}
 
-		
+
 	}
 }

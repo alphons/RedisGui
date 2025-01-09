@@ -39,6 +39,7 @@
 			contextMenuStrip1 = new ContextMenuStrip(components);
 			addConnectionToolStripMenuItem = new ToolStripMenuItem();
 			imageList1 = new ImageList(components);
+			txtJson = new TextBox();
 			label3 = new Label();
 			label2 = new Label();
 			lblKey = new Label();
@@ -113,6 +114,7 @@
 			// 
 			// splitContainer2.Panel2
 			// 
+			splitContainer2.Panel2.Controls.Add(txtJson);
 			splitContainer2.Panel2.Controls.Add(label3);
 			splitContainer2.Panel2.Controls.Add(label2);
 			splitContainer2.Panel2.Controls.Add(lblKey);
@@ -153,6 +155,19 @@
 			imageList1.ColorDepth = ColorDepth.Depth32Bit;
 			imageList1.ImageSize = new Size(24, 24);
 			imageList1.TransparentColor = Color.Transparent;
+			// 
+			// txtJson
+			// 
+			txtJson.AcceptsReturn = true;
+			txtJson.AcceptsTab = true;
+			txtJson.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			txtJson.Location = new Point(12, 190);
+			txtJson.Multiline = true;
+			txtJson.Name = "txtJson";
+			txtJson.ReadOnly = true;
+			txtJson.ScrollBars = ScrollBars.Both;
+			txtJson.Size = new Size(507, 129);
+			txtJson.TabIndex = 5;
 			// 
 			// label3
 			// 
@@ -206,12 +221,12 @@
 			// columnHeader1
 			// 
 			columnHeader1.Text = "Field";
-			columnHeader1.Width = 150;
+			columnHeader1.Width = 75;
 			// 
 			// columnHeader2
 			// 
 			columnHeader2.Text = "Value";
-			columnHeader2.Width = 250;
+			columnHeader2.Width = 300;
 			// 
 			// Form1
 			// 
@@ -259,5 +274,6 @@
 		private Label label3;
 		private Label label2;
 		private Label lblKey;
+		private TextBox txtJson;
 	}
 }
