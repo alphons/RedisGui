@@ -1,6 +1,6 @@
 ﻿namespace RedisGui
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         ///  Required designer variable.
@@ -36,10 +36,7 @@
 			splitContainer1 = new SplitContainer();
 			splitContainer2 = new SplitContainer();
 			treeView1 = new TreeView();
-			contextMenuStrip1 = new ContextMenuStrip(components);
-			addConnectionToolStripMenuItem = new ToolStripMenuItem();
 			imageList1 = new ImageList(components);
-			txtJson = new TextBox();
 			label3 = new Label();
 			label2 = new Label();
 			lblKey = new Label();
@@ -47,15 +44,25 @@
 			listView1 = new ListView();
 			columnHeader1 = new ColumnHeader();
 			columnHeader2 = new ColumnHeader();
+			txtData = new TextBox();
+			contextMenuStrip1 = new ContextMenuStrip(components);
+			addConnectionToolStripMenuItem = new ToolStripMenuItem();
+			contextMenuStrip2 = new ContextMenuStrip(components);
+			showInformationToolStripMenuItem = new ToolStripMenuItem();
+			showConfigurationToolStripMenuItem = new ToolStripMenuItem();
+			toolStripSeparator1 = new ToolStripSeparator();
+			closeConnectionToolStripMenuItem = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
 			splitContainer1.Panel1.SuspendLayout();
+			splitContainer1.Panel2.SuspendLayout();
 			splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
 			splitContainer2.Panel1.SuspendLayout();
 			splitContainer2.Panel2.SuspendLayout();
 			splitContainer2.SuspendLayout();
 			contextMenuStrip1.SuspendLayout();
+			contextMenuStrip2.SuspendLayout();
 			SuspendLayout();
 			// 
 			// menuStrip1
@@ -63,7 +70,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(801, 24);
+			menuStrip1.Size = new Size(1034, 24);
 			menuStrip1.TabIndex = 0;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -82,9 +89,9 @@
 			// 
 			// statusStrip1
 			// 
-			statusStrip1.Location = new Point(0, 428);
+			statusStrip1.Location = new Point(0, 474);
 			statusStrip1.Name = "statusStrip1";
-			statusStrip1.Size = new Size(801, 22);
+			statusStrip1.Size = new Size(1034, 22);
 			statusStrip1.TabIndex = 1;
 			statusStrip1.Text = "statusStrip1";
 			// 
@@ -98,8 +105,13 @@
 			// splitContainer1.Panel1
 			// 
 			splitContainer1.Panel1.Controls.Add(splitContainer2);
-			splitContainer1.Size = new Size(801, 404);
-			splitContainer1.SplitterDistance = 322;
+			// 
+			// splitContainer1.Panel2
+			// 
+			splitContainer1.Panel2.Controls.Add(txtData);
+			splitContainer1.Size = new Size(1034, 450);
+			splitContainer1.SplitterDistance = 315;
+			splitContainer1.SplitterWidth = 10;
 			splitContainer1.TabIndex = 2;
 			// 
 			// splitContainer2
@@ -114,60 +126,34 @@
 			// 
 			// splitContainer2.Panel2
 			// 
-			splitContainer2.Panel2.Controls.Add(txtJson);
 			splitContainer2.Panel2.Controls.Add(label3);
 			splitContainer2.Panel2.Controls.Add(label2);
 			splitContainer2.Panel2.Controls.Add(lblKey);
 			splitContainer2.Panel2.Controls.Add(lblType);
 			splitContainer2.Panel2.Controls.Add(listView1);
-			splitContainer2.Size = new Size(801, 322);
-			splitContainer2.SplitterDistance = 266;
+			splitContainer2.Size = new Size(1034, 315);
+			splitContainer2.SplitterDistance = 343;
+			splitContainer2.SplitterWidth = 10;
 			splitContainer2.TabIndex = 0;
 			// 
 			// treeView1
 			// 
-			treeView1.ContextMenuStrip = contextMenuStrip1;
 			treeView1.Dock = DockStyle.Fill;
 			treeView1.ImageIndex = 0;
 			treeView1.ImageList = imageList1;
 			treeView1.Location = new Point(0, 0);
 			treeView1.Name = "treeView1";
 			treeView1.SelectedImageIndex = 0;
-			treeView1.Size = new Size(266, 322);
+			treeView1.Size = new Size(343, 315);
 			treeView1.TabIndex = 0;
-			treeView1.AfterSelect += treeView1_AfterSelect;
-			// 
-			// contextMenuStrip1
-			// 
-			contextMenuStrip1.Items.AddRange(new ToolStripItem[] { addConnectionToolStripMenuItem });
-			contextMenuStrip1.Name = "contextMenuStrip1";
-			contextMenuStrip1.Size = new Size(171, 26);
-			// 
-			// addConnectionToolStripMenuItem
-			// 
-			addConnectionToolStripMenuItem.Name = "addConnectionToolStripMenuItem";
-			addConnectionToolStripMenuItem.Size = new Size(170, 22);
-			addConnectionToolStripMenuItem.Text = "Add Connection...";
-			addConnectionToolStripMenuItem.Click += AddConnectionToolStripMenuItem_Click;
+			treeView1.AfterSelect += TreeView_AfterSelect;
+			treeView1.MouseUp += TreeView_MouseUp;
 			// 
 			// imageList1
 			// 
 			imageList1.ColorDepth = ColorDepth.Depth32Bit;
 			imageList1.ImageSize = new Size(24, 24);
 			imageList1.TransparentColor = Color.Transparent;
-			// 
-			// txtJson
-			// 
-			txtJson.AcceptsReturn = true;
-			txtJson.AcceptsTab = true;
-			txtJson.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			txtJson.Location = new Point(12, 190);
-			txtJson.Multiline = true;
-			txtJson.Name = "txtJson";
-			txtJson.ReadOnly = true;
-			txtJson.ScrollBars = ScrollBars.Both;
-			txtJson.Size = new Size(507, 129);
-			txtJson.TabIndex = 5;
 			// 
 			// label3
 			// 
@@ -207,13 +193,13 @@
 			// 
 			// listView1
 			// 
-			listView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			listView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
 			listView1.FullRowSelect = true;
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 79);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(507, 97);
+			listView1.Size = new Size(651, 233);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -221,28 +207,89 @@
 			// columnHeader1
 			// 
 			columnHeader1.Text = "Field";
-			columnHeader1.Width = 75;
+			columnHeader1.Width = 175;
 			// 
 			// columnHeader2
 			// 
 			columnHeader2.Text = "Value";
-			columnHeader2.Width = 300;
+			columnHeader2.Width = 353;
 			// 
-			// Form1
+			// txtData
+			// 
+			txtData.AcceptsReturn = true;
+			txtData.AcceptsTab = true;
+			txtData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			txtData.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+			txtData.Location = new Point(3, 3);
+			txtData.Multiline = true;
+			txtData.Name = "txtData";
+			txtData.ReadOnly = true;
+			txtData.ScrollBars = ScrollBars.Both;
+			txtData.Size = new Size(1019, 113);
+			txtData.TabIndex = 5;
+			// 
+			// contextMenuStrip1
+			// 
+			contextMenuStrip1.Items.AddRange(new ToolStripItem[] { addConnectionToolStripMenuItem });
+			contextMenuStrip1.Name = "contextMenuStrip1";
+			contextMenuStrip1.Size = new Size(171, 26);
+			// 
+			// addConnectionToolStripMenuItem
+			// 
+			addConnectionToolStripMenuItem.Name = "addConnectionToolStripMenuItem";
+			addConnectionToolStripMenuItem.Size = new Size(170, 22);
+			addConnectionToolStripMenuItem.Text = "Add Connection...";
+			addConnectionToolStripMenuItem.Click += AddConnectionToolStripMenuItem_Click;
+			// 
+			// contextMenuStrip2
+			// 
+			contextMenuStrip2.Items.AddRange(new ToolStripItem[] { showInformationToolStripMenuItem, showConfigurationToolStripMenuItem, toolStripSeparator1, closeConnectionToolStripMenuItem });
+			contextMenuStrip2.Name = "contextMenuStrip2";
+			contextMenuStrip2.Size = new Size(181, 76);
+			// 
+			// showInformationToolStripMenuItem
+			// 
+			showInformationToolStripMenuItem.Name = "showInformationToolStripMenuItem";
+			showInformationToolStripMenuItem.Size = new Size(180, 22);
+			showInformationToolStripMenuItem.Text = "Show Information";
+			showInformationToolStripMenuItem.Click += ShowInformationToolStripMenuItem_Click;
+			// 
+			// showConfigurationToolStripMenuItem
+			// 
+			showConfigurationToolStripMenuItem.Name = "showConfigurationToolStripMenuItem";
+			showConfigurationToolStripMenuItem.Size = new Size(180, 22);
+			showConfigurationToolStripMenuItem.Text = "Show Configuration";
+			showConfigurationToolStripMenuItem.Click += ShowConfigurationToolStripMenuItem_Click;
+			// 
+			// toolStripSeparator1
+			// 
+			toolStripSeparator1.Name = "toolStripSeparator1";
+			toolStripSeparator1.Size = new Size(177, 6);
+			// 
+			// closeConnectionToolStripMenuItem
+			// 
+			closeConnectionToolStripMenuItem.Name = "closeConnectionToolStripMenuItem";
+			closeConnectionToolStripMenuItem.Size = new Size(180, 22);
+			closeConnectionToolStripMenuItem.Text = "Close Connection";
+			closeConnectionToolStripMenuItem.Click += closeConnectionToolStripMenuItem_Click;
+			// 
+			// FormMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(801, 450);
+			ClientSize = new Size(1034, 496);
 			Controls.Add(splitContainer1);
 			Controls.Add(statusStrip1);
 			Controls.Add(menuStrip1);
 			MainMenuStrip = menuStrip1;
-			Name = "Form1";
+			Name = "FormMain";
 			Text = "redisgui";
-			Load += Form1_Load;
+			Load += Form_Load;
 			menuStrip1.ResumeLayout(false);
 			menuStrip1.PerformLayout();
 			splitContainer1.Panel1.ResumeLayout(false);
+			splitContainer1.Panel2.ResumeLayout(false);
+			splitContainer1.Panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
 			splitContainer1.ResumeLayout(false);
 			splitContainer2.Panel1.ResumeLayout(false);
@@ -251,6 +298,7 @@
 			((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
 			splitContainer2.ResumeLayout(false);
 			contextMenuStrip1.ResumeLayout(false);
+			contextMenuStrip2.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -274,6 +322,11 @@
 		private Label label3;
 		private Label label2;
 		private Label lblKey;
-		private TextBox txtJson;
+		private TextBox txtData;
+		private ContextMenuStrip contextMenuStrip2;
+		private ToolStripMenuItem showConfigurationToolStripMenuItem;
+		private ToolStripMenuItem showInformationToolStripMenuItem;
+		private ToolStripSeparator toolStripSeparator1;
+		private ToolStripMenuItem closeConnectionToolStripMenuItem;
 	}
 }
