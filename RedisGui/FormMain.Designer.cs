@@ -33,6 +33,7 @@
 			fileToolStripMenuItem = new ToolStripMenuItem();
 			exitToolStripMenuItem = new ToolStripMenuItem();
 			statusStrip1 = new StatusStrip();
+			toolStripStatusLabel1 = new ToolStripStatusLabel();
 			splitContainer1 = new SplitContainer();
 			splitContainer2 = new SplitContainer();
 			treeView1 = new TreeView();
@@ -52,7 +53,9 @@
 			showConfigurationToolStripMenuItem = new ToolStripMenuItem();
 			toolStripSeparator1 = new ToolStripSeparator();
 			closeConnectionToolStripMenuItem = new ToolStripMenuItem();
+			timer1 = new System.Windows.Forms.Timer(components);
 			menuStrip1.SuspendLayout();
+			statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
 			splitContainer1.Panel1.SuspendLayout();
 			splitContainer1.Panel2.SuspendLayout();
@@ -89,11 +92,19 @@
 			// 
 			// statusStrip1
 			// 
+			statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
 			statusStrip1.Location = new Point(0, 474);
 			statusStrip1.Name = "statusStrip1";
 			statusStrip1.Size = new Size(1034, 22);
 			statusStrip1.TabIndex = 1;
 			statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabel1
+			// 
+			toolStripStatusLabel1.Image = Properties.Resources.blue;
+			toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			toolStripStatusLabel1.RightToLeftAutoMirrorImage = true;
+			toolStripStatusLabel1.Size = new Size(16, 17);
 			// 
 			// splitContainer1
 			// 
@@ -199,10 +210,11 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 79);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(651, 233);
+			listView1.Size = new Size(615, 233);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
+			listView1.SelectedIndexChanged += ListView_SelectedIndexChanged;
 			// 
 			// columnHeader1
 			// 
@@ -225,7 +237,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1019, 113);
+			txtData.Size = new Size(1019, 77);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -273,6 +285,11 @@
 			closeConnectionToolStripMenuItem.Text = "Close Connection";
 			closeConnectionToolStripMenuItem.Click += closeConnectionToolStripMenuItem_Click;
 			// 
+			// timer1
+			// 
+			timer1.Interval = 5000;
+			timer1.Tick += Timer_Tick;
+			// 
 			// FormMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -287,6 +304,8 @@
 			Load += Form_Load;
 			menuStrip1.ResumeLayout(false);
 			menuStrip1.PerformLayout();
+			statusStrip1.ResumeLayout(false);
+			statusStrip1.PerformLayout();
 			splitContainer1.Panel1.ResumeLayout(false);
 			splitContainer1.Panel2.ResumeLayout(false);
 			splitContainer1.Panel2.PerformLayout();
@@ -328,5 +347,8 @@
 		private ToolStripMenuItem showInformationToolStripMenuItem;
 		private ToolStripSeparator toolStripSeparator1;
 		private ToolStripMenuItem closeConnectionToolStripMenuItem;
+		private System.Windows.Forms.Timer timer1;
+		private ToolStripSplitButton toolStripSplitButton1;
+		private ToolStripStatusLabel toolStripStatusLabel1;
 	}
 }

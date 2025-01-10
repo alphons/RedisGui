@@ -1,7 +1,10 @@
 
+using RedisGui.Properties;
 using StackExchange.Redis;
+using System.Buffers.Binary;
 using System.Diagnostics;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -48,6 +51,8 @@ namespace RedisGui
 			var node = this.treeView1.Nodes.Add("", endPoint.ToString(), 1, 1);
 
 			LoadKeys(node);
+
+			this.timer1.Start();
 		}
 
 		private void LoadKeys(TreeNode node)
@@ -119,7 +124,7 @@ namespace RedisGui
 			{
 				if (i % 32 == 0)
 				{
-					hexBuilder.Append(i.ToString("X4"));
+					hexBuilder.Append(i.ToString("X6"));
 					hexBuilder.Append(" - ");
 				}
 				hexBuilder.Append(byteArray[i].ToString("X2"));
@@ -146,7 +151,7 @@ namespace RedisGui
 			var todo = (32 * 3) - 3 * last + 2;
 			if (last < 16)
 				todo += 2;
-			if(todo>0)
+			if (todo > 0)
 			{
 				for (int i = 0; i < todo; i++)
 					hexBuilder.Append(' ');
@@ -154,6 +159,32 @@ namespace RedisGui
 			}
 
 			return hexBuilder.ToString();
+		}
+
+
+		public static Int16 ReadInt16(byte[] b, int index) => BinaryPrimitives.ReadInt16BigEndian(b.AsSpan(index, 2));
+		public static Int32 ReadInt32(byte[] b, int index) => BinaryPrimitives.ReadInt32BigEndian(b.AsSpan(index, 4));
+
+		private static void SessionDecoder(ListView lv, byte[] b)
+		{
+			lv.Items.Add(new ListViewItem(["Version", $"{b[0]}.{b[1]}"]));
+			var count = ReadInt16(b, 2);
+			lv.Items.Add(new ListViewItem(["Keys", $"{count}"]));
+			var guid = new Guid(b.AsSpan(4, 16));
+			lv.Items.Add(new ListViewItem(["Guid", $"{guid}"]));
+			var index = 20;
+			for (int i = 0; i < count; i++)
+			{
+				var lenName = ReadInt16(b, index);
+				index += 2;
+				var name = Encoding.UTF8.GetString(b.AsSpan(index, lenName));
+				index += lenName;
+				var lenVal = ReadInt32(b, index);
+				index += 4;
+				var val = Encoding.UTF8.GetString(b.AsSpan(index, lenVal));
+				index += lenVal;
+				lv.Items.Add(new ListViewItem([name, val]));
+			}
 		}
 
 		private void ShowValue(RedisKey key)
@@ -201,11 +232,13 @@ namespace RedisGui
 								case "data":
 									if (val.StartsWith('{') && val.EndsWith('}'))
 										this.txtData.Text = Regex.Unescape(PrettyPrintJson(val));
-									if (val[0]<0x10)
+									if (val[0] == 0x02)
 									{
-										if(entry.Value.Box() is byte[] buffer)
+										if (entry.Value.Box() is byte[] buffer)
 										{
-											this.txtData.Text = ConvertByteArrayToHexText(buffer);
+											//this.txtData.Text = ConvertByteArrayToHexText(buffer);
+											SessionDecoder(this.listView1, buffer);
+											val = $"*binary* (len {buffer.Length})";
 										}
 									}
 									break;
@@ -300,6 +333,7 @@ namespace RedisGui
 			TreeNode node = this.treeView1.GetNodeAt(e.Location);
 			if (node != null)
 			{
+				this.treeView1.SelectedNode = node;
 				if (node.Parent == null)
 					this.contextMenuStrip2.Show(this.treeView1, e.Location);
 				return;
@@ -314,9 +348,56 @@ namespace RedisGui
 			this.treeView1.SelectedNode.Remove();
 			this.db = null;
 			this.server = null;
-			if(this.connection != null)
+			if (this.connection != null)
 				await this.connection.CloseAsync();
 			this.connection = null;
+		}
+
+		private void ListView_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (this.listView1.SelectedIndices.Count != 1)
+				return;
+
+			var lvi = this.listView1.Items[this.listView1.SelectedIndices[0]];
+
+			if (lvi == null)
+				return;
+
+			var val = lvi.SubItems[1].Text;
+			if ((val.StartsWith('{') && val.EndsWith('}')) || (val.StartsWith('[') && val.EndsWith(']')))
+				this.txtData.Text = Regex.Unescape(PrettyPrintJson(val));
+			else
+				this.txtData.Text = val;
+		}
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			if (this.server == null)
+				return;
+
+			this.toolStripStatusLabel1.Image = Resources.green;
+
+			var keys = this.server.Keys(pattern: "*").Select(x => x.ToString()).ToList();
+
+			foreach (TreeNode connectionNode in this.treeView1.Nodes)
+			{
+				for(int j= connectionNode.Nodes.Count -1; j>=0; j--)
+				{
+					TreeNode keyNode = connectionNode.Nodes[j];
+
+					if (keys.Contains(keyNode.Text))
+						keys.Remove(keyNode.Text);
+					else
+						keyNode.Remove();
+				}
+				foreach(var newKey in keys)
+				{
+					connectionNode.Nodes.Add("", newKey, 2, 2);
+				}
+			}
+
+			this.toolStripStatusLabel1.Image = Resources.blue;
+
 		}
 	}
 }
