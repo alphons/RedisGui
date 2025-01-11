@@ -257,19 +257,21 @@ public partial class FormMain : Form
 			return;
 
 		TreeNode node = this.treeView1.GetNodeAt(e.Location);
-		if (node != null)
+		if (node == null)
 		{
-			this.treeView1.SelectedNode = node;
-			if (node.Parent == null)
-				this.contextMenuStrip2.Show(this.treeView1, e.Location);
+			this.contextMenuStrip1.Show(this.treeView1, e.Location);
 			return;
 		}
 
-		this.contextMenuStrip1.Show(this.treeView1, e.Location);
+		this.treeView1.SelectedNode = node;
 
+		if (node.Parent == null)
+			this.contextMenuStrip2.Show(this.treeView1, e.Location);
+		else
+			this.contextMenuStrip3.Show(this.treeView1, e.Location);
 	}
 
-	async private void closeConnectionToolStripMenuItem_Click(object sender, EventArgs e)
+	async private void CloseConnectionToolStripMenuItem_Click(object sender, EventArgs e)
 	{
 		this.treeView1.SelectedNode.Remove();
 		this.db = null;
@@ -328,5 +330,21 @@ public partial class FormMain : Form
 	private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
 	{
 		this.Close();
+	}
+
+	private async void DeleteKeyToolStripMenuItem_Click(object sender, EventArgs e)
+	{
+		if (this.db == null)
+			return;
+
+		if (this.treeView1.SelectedNode == null)
+			return;
+
+		var key = this.treeView1.SelectedNode.Text;
+
+		await this.db.KeyDeleteAsync(new RedisKey(key));
+
+		this.treeView1.SelectedNode.Remove();
+
 	}
 }

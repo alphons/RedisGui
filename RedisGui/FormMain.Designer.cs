@@ -54,6 +54,8 @@
 			toolStripSeparator1 = new ToolStripSeparator();
 			closeConnectionToolStripMenuItem = new ToolStripMenuItem();
 			timer1 = new System.Windows.Forms.Timer(components);
+			contextMenuStrip3 = new ContextMenuStrip(components);
+			deleteKeyToolStripMenuItem = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -66,6 +68,7 @@
 			splitContainer2.SuspendLayout();
 			contextMenuStrip1.SuspendLayout();
 			contextMenuStrip2.SuspendLayout();
+			contextMenuStrip3.SuspendLayout();
 			SuspendLayout();
 			// 
 			// menuStrip1
@@ -87,7 +90,7 @@
 			// exitToolStripMenuItem
 			// 
 			exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			exitToolStripMenuItem.Size = new Size(180, 22);
+			exitToolStripMenuItem.Size = new Size(93, 22);
 			exitToolStripMenuItem.Text = "Exit";
 			exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
 			// 
@@ -211,7 +214,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 79);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(609, 233);
+			listView1.Size = new Size(603, 233);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -238,7 +241,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1019, 71);
+			txtData.Size = new Size(1019, 65);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -284,12 +287,25 @@
 			closeConnectionToolStripMenuItem.Name = "closeConnectionToolStripMenuItem";
 			closeConnectionToolStripMenuItem.Size = new Size(180, 22);
 			closeConnectionToolStripMenuItem.Text = "Close Connection";
-			closeConnectionToolStripMenuItem.Click += closeConnectionToolStripMenuItem_Click;
+			closeConnectionToolStripMenuItem.Click += CloseConnectionToolStripMenuItem_Click;
 			// 
 			// timer1
 			// 
 			timer1.Interval = 5000;
 			timer1.Tick += Timer_Tick;
+			// 
+			// contextMenuStrip3
+			// 
+			contextMenuStrip3.Items.AddRange(new ToolStripItem[] { deleteKeyToolStripMenuItem });
+			contextMenuStrip3.Name = "contextMenuStrip3";
+			contextMenuStrip3.Size = new Size(181, 48);
+			// 
+			// deleteKeyToolStripMenuItem
+			// 
+			deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
+			deleteKeyToolStripMenuItem.Size = new Size(180, 22);
+			deleteKeyToolStripMenuItem.Text = "Delete Key";
+			deleteKeyToolStripMenuItem.Click += DeleteKeyToolStripMenuItem_Click;
 			// 
 			// FormMain
 			// 
@@ -319,6 +335,7 @@
 			splitContainer2.ResumeLayout(false);
 			contextMenuStrip1.ResumeLayout(false);
 			contextMenuStrip2.ResumeLayout(false);
+			contextMenuStrip3.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -351,5 +368,7 @@
 		private System.Windows.Forms.Timer timer1;
 		private ToolStripSplitButton toolStripSplitButton1;
 		private ToolStripStatusLabel toolStripStatusLabel1;
+		private ContextMenuStrip contextMenuStrip3;
+		private ToolStripMenuItem deleteKeyToolStripMenuItem;
 	}
 }
