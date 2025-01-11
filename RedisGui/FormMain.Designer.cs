@@ -214,7 +214,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 79);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(603, 233);
+			listView1.Size = new Size(597, 233);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -241,7 +241,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1019, 65);
+			txtData.Size = new Size(1019, 119);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -298,12 +298,12 @@
 			// 
 			contextMenuStrip3.Items.AddRange(new ToolStripItem[] { deleteKeyToolStripMenuItem });
 			contextMenuStrip3.Name = "contextMenuStrip3";
-			contextMenuStrip3.Size = new Size(181, 48);
+			contextMenuStrip3.Size = new Size(130, 26);
 			// 
 			// deleteKeyToolStripMenuItem
 			// 
 			deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
-			deleteKeyToolStripMenuItem.Size = new Size(180, 22);
+			deleteKeyToolStripMenuItem.Size = new Size(129, 22);
 			deleteKeyToolStripMenuItem.Text = "Delete Key";
 			deleteKeyToolStripMenuItem.Click += DeleteKeyToolStripMenuItem_Click;
 			// 
