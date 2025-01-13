@@ -1,7 +1,9 @@
-﻿using System.Buffers.Binary;
+﻿using System;
+using System.Buffers.Binary;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace RedisGui;
 
@@ -51,8 +53,11 @@ public class Helper
 		return $"{major}.{minor}";
 	}
 
-	public static void SessionDecoder(ListView lv, byte[] b)
+	public static void SessionDecoder(ListView lv, string entryName, byte[] b)
 	{
+		lv.Items.Add(new ListViewItem([entryName, $"*binary* (len {b.Length})"]));
+		lv.Items.Add(new ListViewItem(["--------------", "--------------"]));
+
 		var index = 0;
 		lv.Items.Add(new ListViewItem([ "Version", ReadVersion(b, ref index) ]));
 		var count = ReadInt16(b, ref index);

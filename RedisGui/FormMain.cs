@@ -162,9 +162,8 @@ public partial class FormMain : Form
 								{
 									if (entry.Value.Box() is byte[] buffer)
 									{
-										this.listView1.Items.Add(new ListViewItem([entry.Name.ToString(), $"*binary* (len {buffer.Length})"]));
 										//this.txtData.Text = Helper.ConvertByteArrayToHexText(buffer);
-										Helper.SessionDecoder(this.listView1, buffer);
+										Helper.SessionDecoder(this.listView1, entry.Name.ToString(), buffer);
 										continue;
 									}
 								}
