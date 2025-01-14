@@ -65,7 +65,7 @@ public class Helper
 
 		lv.Items.Add(new ListViewItem(["Version", version]));
 		lv.Items.Add(new ListViewItem(["Guid", guid.ToString()]));
-		lv.Items.Add(new ListViewItem(["Keys", $"vvvvvvvv {count} vvvvvvvv"]));
+		lv.Items.Add(new ListViewItem(["Keys", $"{count} (below)"]));
 
 		for (int i = 0; i < count; i++)
 		{
