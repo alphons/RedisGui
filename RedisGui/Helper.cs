@@ -59,11 +59,13 @@ public class Helper
 		lv.Items.Add(new ListViewItem(["--------------", "--------------"]));
 
 		var index = 0;
-		lv.Items.Add(new ListViewItem([ "Version", ReadVersion(b, ref index) ]));
+		var version = ReadVersion(b, ref index);
 		var count = ReadInt16(b, ref index);
-		lv.Items.Add(new ListViewItem([ "Keys", count.ToString() ]));
 		var guid = ReadGuid(b, ref index);
-		lv.Items.Add(new ListViewItem([ "Guid", guid.ToString() ]));
+
+		lv.Items.Add(new ListViewItem(["Version", version]));
+		lv.Items.Add(new ListViewItem(["Guid", guid.ToString()]));
+		lv.Items.Add(new ListViewItem(["Keys", $"vvvvvvvv {count} vvvvvvvv"]));
 
 		for (int i = 0; i < count; i++)
 		{
