@@ -56,6 +56,10 @@
 			timer1 = new System.Windows.Forms.Timer(components);
 			contextMenuStrip3 = new ContextMenuStrip(components);
 			deleteKeyToolStripMenuItem = new ToolStripMenuItem();
+			label1 = new Label();
+			txtSearch = new TextBox();
+			label4 = new Label();
+			txtMaxKeys = new TextBox();
 			menuStrip1.SuspendLayout();
 			statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -76,7 +80,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(1034, 24);
+			menuStrip1.Size = new Size(1015, 24);
 			menuStrip1.TabIndex = 0;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -97,9 +101,9 @@
 			// statusStrip1
 			// 
 			statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
-			statusStrip1.Location = new Point(0, 474);
+			statusStrip1.Location = new Point(0, 522);
 			statusStrip1.Name = "statusStrip1";
-			statusStrip1.Size = new Size(1034, 22);
+			statusStrip1.Size = new Size(1015, 22);
 			statusStrip1.TabIndex = 1;
 			statusStrip1.Text = "statusStrip1";
 			// 
@@ -124,8 +128,8 @@
 			// splitContainer1.Panel2
 			// 
 			splitContainer1.Panel2.Controls.Add(txtData);
-			splitContainer1.Size = new Size(1034, 450);
-			splitContainer1.SplitterDistance = 315;
+			splitContainer1.Size = new Size(1015, 498);
+			splitContainer1.SplitterDistance = 300;
 			splitContainer1.SplitterWidth = 10;
 			splitContainer1.TabIndex = 2;
 			// 
@@ -137,6 +141,10 @@
 			// 
 			// splitContainer2.Panel1
 			// 
+			splitContainer2.Panel1.Controls.Add(txtMaxKeys);
+			splitContainer2.Panel1.Controls.Add(label4);
+			splitContainer2.Panel1.Controls.Add(txtSearch);
+			splitContainer2.Panel1.Controls.Add(label1);
 			splitContainer2.Panel1.Controls.Add(treeView1);
 			// 
 			// splitContainer2.Panel2
@@ -146,20 +154,20 @@
 			splitContainer2.Panel2.Controls.Add(lblKey);
 			splitContainer2.Panel2.Controls.Add(lblType);
 			splitContainer2.Panel2.Controls.Add(listView1);
-			splitContainer2.Size = new Size(1034, 315);
-			splitContainer2.SplitterDistance = 343;
+			splitContainer2.Size = new Size(1015, 300);
+			splitContainer2.SplitterDistance = 336;
 			splitContainer2.SplitterWidth = 10;
 			splitContainer2.TabIndex = 0;
 			// 
 			// treeView1
 			// 
-			treeView1.Dock = DockStyle.Fill;
+			treeView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			treeView1.ImageIndex = 0;
 			treeView1.ImageList = imageList1;
-			treeView1.Location = new Point(0, 0);
+			treeView1.Location = new Point(0, 49);
 			treeView1.Name = "treeView1";
 			treeView1.SelectedImageIndex = 0;
-			treeView1.Size = new Size(343, 315);
+			treeView1.Size = new Size(336, 251);
 			treeView1.TabIndex = 0;
 			treeView1.AfterSelect += TreeView_AfterSelect;
 			treeView1.MouseUp += TreeView_MouseUp;
@@ -173,7 +181,7 @@
 			// label3
 			// 
 			label3.AutoSize = true;
-			label3.Location = new Point(13, 46);
+			label3.Location = new Point(172, 17);
 			label3.Name = "label3";
 			label3.Size = new Size(29, 15);
 			label3.TabIndex = 4;
@@ -191,7 +199,7 @@
 			// lblKey
 			// 
 			lblKey.AutoSize = true;
-			lblKey.Location = new Point(61, 46);
+			lblKey.Location = new Point(222, 17);
 			lblKey.Name = "lblKey";
 			lblKey.Size = new Size(16, 15);
 			lblKey.TabIndex = 2;
@@ -200,7 +208,7 @@
 			// lblType
 			// 
 			lblType.AutoSize = true;
-			lblType.Location = new Point(61, 16);
+			lblType.Location = new Point(68, 17);
 			lblType.Name = "lblType";
 			lblType.Size = new Size(16, 15);
 			lblType.TabIndex = 1;
@@ -213,9 +221,9 @@
 			listView1.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
 			listView1.FullRowSelect = true;
 			listView1.GridLines = true;
-			listView1.Location = new Point(12, 79);
+			listView1.Location = new Point(12, 49);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(591, 233);
+			listView1.Size = new Size(645, 248);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -242,7 +250,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1019, 113);
+			txtData.Size = new Size(1000, 164);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -308,11 +316,44 @@
 			deleteKeyToolStripMenuItem.Text = "Delete Key";
 			deleteKeyToolStripMenuItem.Click += DeleteKeyToolStripMenuItem_Click;
 			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(9, 13);
+			label1.Name = "label1";
+			label1.Size = new Size(41, 15);
+			label1.TabIndex = 1;
+			label1.Text = "search";
+			// 
+			// txtSearch
+			// 
+			txtSearch.Location = new Point(56, 10);
+			txtSearch.Name = "txtSearch";
+			txtSearch.Size = new Size(157, 23);
+			txtSearch.TabIndex = 2;
+			// 
+			// label4
+			// 
+			label4.AutoSize = true;
+			label4.Location = new Point(219, 13);
+			label4.Name = "label4";
+			label4.Size = new Size(54, 15);
+			label4.TabIndex = 3;
+			label4.Text = "MaxKeys";
+			// 
+			// txtMaxKeys
+			// 
+			txtMaxKeys.Location = new Point(279, 10);
+			txtMaxKeys.Name = "txtMaxKeys";
+			txtMaxKeys.Size = new Size(41, 23);
+			txtMaxKeys.TabIndex = 4;
+			txtMaxKeys.Text = "100";
+			// 
 			// FormMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(1034, 496);
+			ClientSize = new Size(1015, 544);
 			Controls.Add(splitContainer1);
 			Controls.Add(statusStrip1);
 			Controls.Add(menuStrip1);
@@ -330,6 +371,7 @@
 			((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
 			splitContainer1.ResumeLayout(false);
 			splitContainer2.Panel1.ResumeLayout(false);
+			splitContainer2.Panel1.PerformLayout();
 			splitContainer2.Panel2.ResumeLayout(false);
 			splitContainer2.Panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
@@ -371,5 +413,9 @@
 		private ToolStripStatusLabel toolStripStatusLabel1;
 		private ContextMenuStrip contextMenuStrip3;
 		private ToolStripMenuItem deleteKeyToolStripMenuItem;
+		private TextBox txtMaxKeys;
+		private Label label4;
+		private TextBox txtSearch;
+		private Label label1;
 	}
 }

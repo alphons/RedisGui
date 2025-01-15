@@ -55,8 +55,10 @@ public partial class FormMain : Form
 		if (this.server == null)
 			return [];
 
+		_ = int.TryParse(this.txtMaxKeys.Text, out int PageSize);
+
 		IAsyncEnumerator<RedisKey> keysAsync = this.server
-			.KeysAsync(pattern: $"{key}*", pageSize: 100)
+			.KeysAsync(pattern: $"{key}*", pageSize: PageSize)
 			.GetAsyncEnumerator();
 		List<RedisKey> keys = [];
 		while (await keysAsync.MoveNextAsync())
@@ -74,7 +76,9 @@ public partial class FormMain : Form
 
 		try
 		{
-			var keys = await SearchRedisKeysAsync(string.Empty);
+			var strSearch = this.txtSearch.Text.Trim();
+
+			var keys = await SearchRedisKeysAsync(strSearch);
 
 			node.Nodes.Clear();
 
