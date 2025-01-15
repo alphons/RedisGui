@@ -210,11 +210,12 @@
 			// 
 			listView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
+			listView1.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
 			listView1.FullRowSelect = true;
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 79);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(597, 233);
+			listView1.Size = new Size(591, 233);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -241,7 +242,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1019, 119);
+			txtData.Size = new Size(1019, 113);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
