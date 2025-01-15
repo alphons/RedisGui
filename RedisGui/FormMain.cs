@@ -156,7 +156,7 @@ public partial class FormMain : Form
 								val = TimeSpan.FromMilliseconds(long.Parse(val) / 10000).ToString();
 								break;
 							case "data":
-								if (val.StartsWith('{') && val.EndsWith('}'))
+								if (val.StartsWith('{') && val.EndsWith('}')) // and [] ??
 									this.txtData.Text = Helper.PrettyPrintJson(val);
 								if (val[0] == 0x02)
 								{

@@ -64,8 +64,8 @@ public class Helper
 		var guid = ReadGuid(b, ref index);
 
 		lv.Items.Add(new ListViewItem(["Version", version]));
-		lv.Items.Add(new ListViewItem(["Guid", guid.ToString()]));
-		lv.Items.Add(new ListViewItem(["Keys", $"{count} (below)"]));
+		lv.Items.Add(new ListViewItem(["Session id", guid.ToString()]));
+		lv.Items.Add(new ListViewItem(["Number of keys", $"{count} (below)"]));
 
 		for (int i = 0; i < count; i++)
 		{
