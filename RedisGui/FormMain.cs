@@ -329,7 +329,7 @@ public partial class FormMain : Form
 
 		var key = this.treeView1.SelectedNode.Text;
 
-		DialogResult result = MessageBox.Show("Delet the mofo?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+		DialogResult result = MessageBox.Show("Delete the mofo?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
 		if (result == DialogResult.OK)
 		{
@@ -337,6 +337,8 @@ public partial class FormMain : Form
 			await this.db.KeyDeleteAsync(new RedisKey(key));
 
 			this.treeView1.SelectedNode.Remove();
+
+			this.listView1.Items.Clear();
 		}
 
 	}
