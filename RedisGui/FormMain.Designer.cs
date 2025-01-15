@@ -36,6 +36,9 @@
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
 			splitContainer1 = new SplitContainer();
 			splitContainer2 = new SplitContainer();
+			txtMaxKeys = new TextBox();
+			label4 = new Label();
+			txtSearch = new TextBox();
 			treeView1 = new TreeView();
 			imageList1 = new ImageList(components);
 			label3 = new Label();
@@ -56,10 +59,7 @@
 			timer1 = new System.Windows.Forms.Timer(components);
 			contextMenuStrip3 = new ContextMenuStrip(components);
 			deleteKeyToolStripMenuItem = new ToolStripMenuItem();
-			label1 = new Label();
-			txtSearch = new TextBox();
-			label4 = new Label();
-			txtMaxKeys = new TextBox();
+			button1 = new Button();
 			menuStrip1.SuspendLayout();
 			statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -141,10 +141,10 @@
 			// 
 			// splitContainer2.Panel1
 			// 
+			splitContainer2.Panel1.Controls.Add(button1);
 			splitContainer2.Panel1.Controls.Add(txtMaxKeys);
 			splitContainer2.Panel1.Controls.Add(label4);
 			splitContainer2.Panel1.Controls.Add(txtSearch);
-			splitContainer2.Panel1.Controls.Add(label1);
 			splitContainer2.Panel1.Controls.Add(treeView1);
 			// 
 			// splitContainer2.Panel2
@@ -158,6 +158,30 @@
 			splitContainer2.SplitterDistance = 336;
 			splitContainer2.SplitterWidth = 10;
 			splitContainer2.TabIndex = 0;
+			// 
+			// txtMaxKeys
+			// 
+			txtMaxKeys.Location = new Point(279, 10);
+			txtMaxKeys.Name = "txtMaxKeys";
+			txtMaxKeys.Size = new Size(41, 23);
+			txtMaxKeys.TabIndex = 4;
+			txtMaxKeys.Text = "100";
+			// 
+			// label4
+			// 
+			label4.AutoSize = true;
+			label4.Location = new Point(219, 13);
+			label4.Name = "label4";
+			label4.Size = new Size(54, 15);
+			label4.TabIndex = 3;
+			label4.Text = "MaxKeys";
+			// 
+			// txtSearch
+			// 
+			txtSearch.Location = new Point(3, 10);
+			txtSearch.Name = "txtSearch";
+			txtSearch.Size = new Size(143, 23);
+			txtSearch.TabIndex = 2;
 			// 
 			// treeView1
 			// 
@@ -223,7 +247,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 49);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(645, 248);
+			listView1.Size = new Size(639, 248);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -250,7 +274,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1000, 164);
+			txtData.Size = new Size(1000, 158);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -316,38 +340,15 @@
 			deleteKeyToolStripMenuItem.Text = "Delete Key";
 			deleteKeyToolStripMenuItem.Click += DeleteKeyToolStripMenuItem_Click;
 			// 
-			// label1
+			// button1
 			// 
-			label1.AutoSize = true;
-			label1.Location = new Point(9, 13);
-			label1.Name = "label1";
-			label1.Size = new Size(41, 15);
-			label1.TabIndex = 1;
-			label1.Text = "search";
-			// 
-			// txtSearch
-			// 
-			txtSearch.Location = new Point(56, 10);
-			txtSearch.Name = "txtSearch";
-			txtSearch.Size = new Size(157, 23);
-			txtSearch.TabIndex = 2;
-			// 
-			// label4
-			// 
-			label4.AutoSize = true;
-			label4.Location = new Point(219, 13);
-			label4.Name = "label4";
-			label4.Size = new Size(54, 15);
-			label4.TabIndex = 3;
-			label4.Text = "MaxKeys";
-			// 
-			// txtMaxKeys
-			// 
-			txtMaxKeys.Location = new Point(279, 10);
-			txtMaxKeys.Name = "txtMaxKeys";
-			txtMaxKeys.Size = new Size(41, 23);
-			txtMaxKeys.TabIndex = 4;
-			txtMaxKeys.Text = "100";
+			button1.Location = new Point(152, 10);
+			button1.Name = "button1";
+			button1.Size = new Size(61, 23);
+			button1.TabIndex = 5;
+			button1.Text = "search";
+			button1.UseVisualStyleBackColor = true;
+			button1.Click += Search_Click;
 			// 
 			// FormMain
 			// 
@@ -409,13 +410,12 @@
 		private ToolStripSeparator toolStripSeparator1;
 		private ToolStripMenuItem closeConnectionToolStripMenuItem;
 		private System.Windows.Forms.Timer timer1;
-		private ToolStripSplitButton toolStripSplitButton1;
 		private ToolStripStatusLabel toolStripStatusLabel1;
 		private ContextMenuStrip contextMenuStrip3;
 		private ToolStripMenuItem deleteKeyToolStripMenuItem;
 		private TextBox txtMaxKeys;
 		private Label label4;
 		private TextBox txtSearch;
-		private Label label1;
+		private Button button1;
 	}
 }

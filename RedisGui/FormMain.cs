@@ -3,6 +3,7 @@ using RedisGui.Properties;
 using StackExchange.Redis;
 using System.Diagnostics;
 using System.Net;
+using System.Windows.Forms;
 
 
 namespace RedisGui;
@@ -45,52 +46,9 @@ public partial class FormMain : Form
 
 		var node = this.treeView1.Nodes.Add("", endPoint.ToString(), 1, 1);
 
-		await LoadKeysAsync(node);
+		await SearchAsync();
 
 		this.timer1.Start();
-	}
-
-	private async Task<List<RedisKey>> SearchRedisKeysAsync(string key)
-	{
-		if (this.server == null)
-			return [];
-
-		_ = int.TryParse(this.txtMaxKeys.Text, out int PageSize);
-
-		IAsyncEnumerator<RedisKey> keysAsync = this.server
-			.KeysAsync(pattern: $"{key}*", pageSize: PageSize)
-			.GetAsyncEnumerator();
-		List<RedisKey> keys = [];
-		while (await keysAsync.MoveNextAsync())
-		{
-			keys.Add(keysAsync.Current);
-		}
-		return keys;
-	}
-
-
-	private async Task LoadKeysAsync(TreeNode node)
-	{
-		if (this.server == null)
-			return;
-
-		try
-		{
-			var strSearch = this.txtSearch.Text.Trim();
-
-			var keys = await SearchRedisKeysAsync(strSearch);
-
-			node.Nodes.Clear();
-
-			foreach (var key in keys)
-			{
-				node.Nodes.Add(new TreeNode(key, 2, 2));
-			}
-		}
-		catch (Exception ex)
-		{
-			MessageBox.Show($"Error loading keys: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		}
 	}
 
 	private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -309,7 +267,28 @@ public partial class FormMain : Form
 
 		this.toolStripStatusLabel1.Image = Resources.green;
 
-		var keys = await SearchRedisKeysAsync(string.Empty);
+		await SearchAsync();
+
+		this.toolStripStatusLabel1.Image = Resources.blue;
+	}
+
+	private async Task SearchAsync()
+	{
+		if (this.server == null)
+			return;
+
+		var strSearch = this.txtSearch.Text.Trim();
+
+		_ = int.TryParse(this.txtMaxKeys.Text, out int PageSize);
+
+		IAsyncEnumerator<RedisKey> keysAsync = this.server
+		.KeysAsync(pattern: $"{strSearch}*", pageSize: PageSize)
+		.GetAsyncEnumerator();
+		List<RedisKey> keys = [];
+		while (await keysAsync.MoveNextAsync())
+		{
+			keys.Add(keysAsync.Current);
+		}
 
 		foreach (TreeNode connectionNode in this.treeView1.Nodes)
 		{
@@ -328,12 +307,16 @@ public partial class FormMain : Form
 			}
 		}
 
-		this.toolStripStatusLabel1.Image = Resources.blue;
 	}
 
 	private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
 	{
 		this.Close();
+	}
+
+	private async void Search_Click(object sender, EventArgs e)
+	{
+		await SearchAsync();
 	}
 
 	private async void DeleteKeyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -357,4 +340,5 @@ public partial class FormMain : Form
 		}
 
 	}
+
 }
