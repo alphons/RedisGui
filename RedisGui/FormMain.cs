@@ -251,20 +251,17 @@ public partial class FormMain : Form
 		if (lvi == null)
 			return;
 
-		var val = lvi.SubItems[1].Text;
-		if ((val.StartsWith('{') && val.EndsWith('}')) || (val.StartsWith('[') && val.EndsWith(']')))
-		{
-			this.txtData.Text = Helper.PrettyPrintJson(val);
-			return;
-		}
-
-		if(val.Contains("*binary*"))
+		if (lvi.Tag != null)
 		{
 			this.txtData.Text = Helper.ConvertByteArrayToHexText(lvi.Tag as byte[]);
 			return;
 		}
 
-		this.txtData.Text = val;
+		var val = lvi.SubItems[1].Text;
+		if ((val.StartsWith('{') && val.EndsWith('}')) || (val.StartsWith('[') && val.EndsWith(']')))
+			this.txtData.Text = Helper.PrettyPrintJson(val);
+		else
+			this.txtData.Text = val;
 	}
 
 	private async void Timer_Tick(object sender, EventArgs e)

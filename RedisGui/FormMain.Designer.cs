@@ -36,6 +36,7 @@
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
 			splitContainer1 = new SplitContainer();
 			splitContainer2 = new SplitContainer();
+			button1 = new Button();
 			txtMaxKeys = new TextBox();
 			label4 = new Label();
 			txtSearch = new TextBox();
@@ -59,7 +60,6 @@
 			timer1 = new System.Windows.Forms.Timer(components);
 			contextMenuStrip3 = new ContextMenuStrip(components);
 			deleteKeyToolStripMenuItem = new ToolStripMenuItem();
-			button1 = new Button();
 			menuStrip1.SuspendLayout();
 			statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -80,7 +80,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(1015, 24);
+			menuStrip1.Size = new Size(1074, 24);
 			menuStrip1.TabIndex = 0;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -103,7 +103,7 @@
 			statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
 			statusStrip1.Location = new Point(0, 522);
 			statusStrip1.Name = "statusStrip1";
-			statusStrip1.Size = new Size(1015, 22);
+			statusStrip1.Size = new Size(1074, 22);
 			statusStrip1.TabIndex = 1;
 			statusStrip1.Text = "statusStrip1";
 			// 
@@ -128,7 +128,7 @@
 			// splitContainer1.Panel2
 			// 
 			splitContainer1.Panel2.Controls.Add(txtData);
-			splitContainer1.Size = new Size(1015, 498);
+			splitContainer1.Size = new Size(1074, 498);
 			splitContainer1.SplitterDistance = 300;
 			splitContainer1.SplitterWidth = 10;
 			splitContainer1.TabIndex = 2;
@@ -154,10 +154,20 @@
 			splitContainer2.Panel2.Controls.Add(lblKey);
 			splitContainer2.Panel2.Controls.Add(lblType);
 			splitContainer2.Panel2.Controls.Add(listView1);
-			splitContainer2.Size = new Size(1015, 300);
-			splitContainer2.SplitterDistance = 336;
+			splitContainer2.Size = new Size(1074, 300);
+			splitContainer2.SplitterDistance = 355;
 			splitContainer2.SplitterWidth = 10;
 			splitContainer2.TabIndex = 0;
+			// 
+			// button1
+			// 
+			button1.Location = new Point(152, 10);
+			button1.Name = "button1";
+			button1.Size = new Size(61, 23);
+			button1.TabIndex = 5;
+			button1.Text = "search";
+			button1.UseVisualStyleBackColor = true;
+			button1.Click += Search_Click;
 			// 
 			// txtMaxKeys
 			// 
@@ -191,7 +201,7 @@
 			treeView1.Location = new Point(0, 49);
 			treeView1.Name = "treeView1";
 			treeView1.SelectedImageIndex = 0;
-			treeView1.Size = new Size(336, 251);
+			treeView1.Size = new Size(355, 251);
 			treeView1.TabIndex = 0;
 			treeView1.AfterSelect += TreeView_AfterSelect;
 			treeView1.MouseUp += TreeView_MouseUp;
@@ -247,7 +257,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 49);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(639, 248);
+			listView1.Size = new Size(685, 248);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -261,7 +271,7 @@
 			// columnHeader2
 			// 
 			columnHeader2.Text = "Value";
-			columnHeader2.Width = 353;
+			columnHeader2.Width = 500;
 			// 
 			// txtData
 			// 
@@ -274,7 +284,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1000, 158);
+			txtData.Size = new Size(1059, 140);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -340,21 +350,11 @@
 			deleteKeyToolStripMenuItem.Text = "Delete Key";
 			deleteKeyToolStripMenuItem.Click += DeleteKeyToolStripMenuItem_Click;
 			// 
-			// button1
-			// 
-			button1.Location = new Point(152, 10);
-			button1.Name = "button1";
-			button1.Size = new Size(61, 23);
-			button1.TabIndex = 5;
-			button1.Text = "search";
-			button1.UseVisualStyleBackColor = true;
-			button1.Click += Search_Click;
-			// 
 			// FormMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(1015, 544);
+			ClientSize = new Size(1074, 544);
 			Controls.Add(splitContainer1);
 			Controls.Add(statusStrip1);
 			Controls.Add(menuStrip1);
