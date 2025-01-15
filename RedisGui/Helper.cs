@@ -1,9 +1,7 @@
-﻿using System;
-using System.Buffers.Binary;
+﻿using System.Buffers.Binary;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace RedisGui;
 
@@ -55,6 +53,7 @@ public class Helper
 
 	public static void SessionDecoder(ListView lv, string entryName, byte[] b)
 	{
+		lv.Tag = b;
 		lv.Items.Add(new ListViewItem([entryName, $"*binary* (len {b.Length})"]));
 		lv.Items.Add(new ListViewItem(["--------------", "--------------"]));
 
@@ -89,8 +88,11 @@ public class Helper
 		}
 	}
 
-	public static string ConvertByteArrayToHexText(byte[] byteArray)
+	public static string ConvertByteArrayToHexText(byte[]? byteArray)
 	{
+		if (byteArray == null)
+			return "null";
+
 		StringBuilder hexBuilder = new();
 
 		for (int i = 0; i < byteArray.Length; i += 32)

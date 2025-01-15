@@ -3,8 +3,6 @@ using RedisGui.Properties;
 using StackExchange.Redis;
 using System.Diagnostics;
 using System.Net;
-using System.Windows.Forms;
-
 
 namespace RedisGui;
 
@@ -255,9 +253,18 @@ public partial class FormMain : Form
 
 		var val = lvi.SubItems[1].Text;
 		if ((val.StartsWith('{') && val.EndsWith('}')) || (val.StartsWith('[') && val.EndsWith(']')))
+		{
 			this.txtData.Text = Helper.PrettyPrintJson(val);
-		else
-			this.txtData.Text = val;
+			return;
+		}
+
+		if(val.Contains("*binary*"))
+		{
+			this.txtData.Text = Helper.ConvertByteArrayToHexText(lvi.Tag as byte[]);
+			return;
+		}
+
+		this.txtData.Text = val;
 	}
 
 	private async void Timer_Tick(object sender, EventArgs e)
