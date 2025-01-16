@@ -289,7 +289,7 @@ public partial class FormMain : Form
 		_ = int.TryParse(this.txtMaxKeys.Text, out int PageSize);
 
 		IAsyncEnumerator<RedisKey> keysAsync = this.server
-		.KeysAsync(pattern: $"{strSearch}*", pageSize: PageSize)
+		.KeysAsync(pattern: $"*{strSearch}*", pageSize: PageSize)
 		.GetAsyncEnumerator();
 		List<RedisKey> keys = [];
 		while (await keysAsync.MoveNextAsync())

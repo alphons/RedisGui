@@ -175,7 +175,7 @@
 			txtMaxKeys.Name = "txtMaxKeys";
 			txtMaxKeys.Size = new Size(41, 23);
 			txtMaxKeys.TabIndex = 4;
-			txtMaxKeys.Text = "100";
+			txtMaxKeys.Text = "1000";
 			// 
 			// label4
 			// 
@@ -257,7 +257,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 49);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(685, 248);
+			listView1.Size = new Size(679, 248);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -284,7 +284,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1059, 140);
+			txtData.Size = new Size(1059, 134);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
