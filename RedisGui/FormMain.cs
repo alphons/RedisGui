@@ -1,14 +1,18 @@
 
+using Microsoft.Extensions.Configuration;
+
 using RedisGui.Properties;
 using StackExchange.Redis;
 using System.Diagnostics;
 using System.Net;
+using System.Collections.Generic;
 
 namespace RedisGui;
 
 public partial class FormMain : Form
 {
-	private const string CONNECTION = "127.0.0.1:6379";
+	private readonly IConfiguration configuration;
+
 	private ConnectionMultiplexer? connection;
 	private IServer? server;
 	private IDatabase? db;
@@ -17,6 +21,10 @@ public partial class FormMain : Form
 	{
 		InitializeComponent();
 
+		var builder = new ConfigurationBuilder()
+		   .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+		configuration = builder.Build();
+
 		imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.World, 24));
 		imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.NetworkConnect, 24));
 		imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.Key, 24));
@@ -24,16 +32,23 @@ public partial class FormMain : Form
 
 	private async void Form_Load(object sender, EventArgs e)
 	{
-		await MakeConnectionAsync(CONNECTION);
+		await MakeConnectionAsync();
 	}
 
 	private async void AddConnectionToolStripMenuItem_Click(object sender, EventArgs e)
 	{
-		await MakeConnectionAsync(CONNECTION);
+		await MakeConnectionAsync();
 	}
 
-	private async Task MakeConnectionAsync(string ConnectionString)
+	private async Task MakeConnectionAsync()
 	{
+
+		List<string> connectionStrings = configuration
+				.GetSection("AppSettings:ConnectionStrings")
+				.Get<List<string>>() ?? [];
+
+		var ConnectionString = connectionStrings[0];
+
 		this.connection = ConnectionMultiplexer.Connect(ConnectionString, x => x.AllowAdmin = true);
 
 		EndPoint endPoint = connection.GetEndPoints().First();
