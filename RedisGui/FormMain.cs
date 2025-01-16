@@ -116,14 +116,17 @@ public partial class FormMain : Form
 								val = TimeSpan.FromMilliseconds(long.Parse(val) / 10000).ToString();
 								break;
 							case "data":
-								if (val.StartsWith('{') && val.EndsWith('}')) // and [] ??
+								name += $" ({val.Length})";
+								if ((val.StartsWith('{') && val.EndsWith('}')) || (val.StartsWith('[') && val.EndsWith(']')))
+								{
 									this.txtData.Text = Helper.PrettyPrintJson(val);
-								if (val[0] == 0x02)
+								}
+								if (val[0] == 0x02) // version 2.0
 								{
 									if (entry.Value.Box() is byte[] buffer)
 									{
 										//this.txtData.Text = Helper.ConvertByteArrayToHexText(buffer);
-										Helper.SessionDecoder(this.listView1, entry.Name.ToString(), buffer);
+										Helper.SessionDecoder(this.listView1, name, buffer);
 										continue;
 									}
 								}
@@ -131,7 +134,7 @@ public partial class FormMain : Form
 						}
 					}
 
-					this.listView1.Items.Add(new ListViewItem([entry.Name.ToString(), val]));
+					this.listView1.Items.Add(new ListViewItem([name, val]));
 				}
 				break;
 			case RedisType.List:

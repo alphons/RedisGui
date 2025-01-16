@@ -53,7 +53,7 @@ public class Helper
 
 	public static void SessionDecoder(ListView lv, string entryName, byte[] b)
 	{
-		var lvi = new ListViewItem([entryName, $"*binary* (len {b.Length})"]);
+		var lvi = new ListViewItem([entryName, $"*binary*"]);
 		lvi.Tag = b;
 		lv.Items.Add(lvi);
 		lv.Items.Add(new ListViewItem(["--------------", "--------------"]));
