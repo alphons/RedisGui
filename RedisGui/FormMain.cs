@@ -213,11 +213,11 @@ public partial class FormMain : Form
 
 		this.listView1.Items.Clear();
 
-		if (this.treeView1.SelectedNode == null || this.treeView1.SelectedNode.Parent == null)
+		if (this.treeView1.SelectedNode == null)
 			return;
 
 
-		if (this.treeView1.SelectedNode.Parent.Tag is not ConnectionPoint connectionNode || connectionNode.Server == null)
+		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionNode || connectionNode.Server == null)
 			return;
 
 		var kvs = await connectionNode.Server.ConfigGetAsync("*");
@@ -235,11 +235,11 @@ public partial class FormMain : Form
 
 		this.listView1.Items.Clear();
 
-		if (this.treeView1.SelectedNode == null || this.treeView1.SelectedNode.Parent == null)
+		if (this.treeView1.SelectedNode == null)
 			return;
 
 
-		if (this.treeView1.SelectedNode.Parent.Tag is not ConnectionPoint connectionNode || connectionNode.Server == null)
+		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionNode || connectionNode.Server == null)
 			return;
 
 		var groups = await connectionNode.Server.InfoAsync();
