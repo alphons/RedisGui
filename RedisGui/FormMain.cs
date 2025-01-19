@@ -1,11 +1,10 @@
 
 using Microsoft.Extensions.Configuration;
 
-using RedisGui.Properties;
 using StackExchange.Redis;
+using System.Configuration;
 using System.Diagnostics;
 using System.Net;
-using System.Collections.Generic;
 
 namespace RedisGui;
 
@@ -13,9 +12,7 @@ public partial class FormMain : Form
 {
 	private readonly IConfiguration configuration;
 
-	private ConnectionMultiplexer? connection;
-	private IServer? server;
-	private IDatabase? db;
+	private readonly List<ConnectionPoint> connections = [];
 
 	public FormMain()
 	{
@@ -23,41 +20,62 @@ public partial class FormMain : Form
 
 		var builder = new ConfigurationBuilder()
 		   .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-		configuration = builder.Build();
+		this.configuration = builder.Build();
 
-		imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.World, 24));
-		imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.NetworkConnect, 24));
-		imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.Key, 24));
+		var connectionStrings = configuration.GetSection("AppSettings:ConnectionStrings").Get<string[]>();
+
+		if(connectionStrings != null)
+			connections = connectionStrings.Select(x => new ConnectionPoint {  ConnectionString = x }).ToList();
+		
+		this.imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.World, 24));
+		this.imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.NetworkConnect, 24));
+		this.imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.Key, 24));
 	}
 
 	private async void Form_Load(object sender, EventArgs e)
 	{
-		await MakeConnectionAsync();
+		await MakeConnectionAsync("127.0.0.1:6379");
 	}
 
 	private async void AddConnectionToolStripMenuItem_Click(object sender, EventArgs e)
 	{
-		await MakeConnectionAsync();
+		await MakeConnectionAsync("127.0.0.1:6379");
 	}
 
-	private async Task MakeConnectionAsync()
+	private async Task MakeConnectionAsync(string ConnectionString)
 	{
+		var connectionPoint = this.connections.FirstOrDefault(x => x.ConnectionString == ConnectionString);
 
-		List<string> connectionStrings = configuration
-				.GetSection("AppSettings:ConnectionStrings")
-				.Get<List<string>>() ?? [];
+		if (connectionPoint == null)
+			return;
 
-		var ConnectionString = connectionStrings[0];
+		foreach (TreeNode item in treeView1.Nodes)
+		{
+			if (item.Text == ConnectionString)
+				return;
+		}
 
-		this.connection = ConnectionMultiplexer.Connect(ConnectionString, x => x.AllowAdmin = true);
+		try
+		{
+			connectionPoint.Connection = await ConnectionMultiplexer.ConnectAsync(ConnectionString, x => x.AllowAdmin = true);
+		}
+		catch(RedisConnectionException)
+		{
+			return;
+		}
 
-		EndPoint endPoint = connection.GetEndPoints().First();
+		EndPoint endPoint = connectionPoint.Connection.GetEndPoints().First();
 
-		this.server = connection.GetServer(endPoint);
+		connectionPoint.Server = connectionPoint.Connection.GetServer(endPoint);
 
-		this.db = connection.GetDatabase();
+		connectionPoint.Db = connectionPoint.Connection.GetDatabase();
 
-		var node = this.treeView1.Nodes.Add("", endPoint.ToString(), 1, 1);
+		var connectionNode = new TreeNode(ConnectionString, 1, 1)
+		{
+			Tag = connectionPoint
+		};
+
+		var node = this.treeView1.Nodes.Add(connectionNode);
 
 		await SearchAsync();
 
@@ -71,13 +89,16 @@ public partial class FormMain : Form
 
 		var key = new RedisKey(e.Node.Text);
 
-		if (this.db == null)
-			return;
-
 		if (e.Node.Parent == null)
 			return;
 
-		if (!db.KeyExists(key))
+		var connectionNode = e.Node.Parent;
+
+
+		if (connectionNode.Tag is not ConnectionPoint connection || connection.Db == null)
+			return;
+
+		if (!connection.Db.KeyExists(key))
 		{
 			e.Node.Remove();
 			return;
@@ -96,13 +117,19 @@ public partial class FormMain : Form
 		this.listView1.Items.Clear();
 		this.txtData.Clear();
 
-		if (this.db == null)
+		if (this.treeView1.SelectedNode == null || this.treeView1.SelectedNode.Parent == null)
 			return;
+
+
+		if (this.treeView1.SelectedNode.Parent.Tag is not ConnectionPoint connectionNode || connectionNode.Db == null)
+			return;
+
+		var db = connectionNode.Db;
 
 		if (!db.KeyExists(key))
 			return;
 
-		RedisType type = this.db.KeyType(key);
+		RedisType type = db.KeyType(key);
 
 		this.lblType.Text = type.ToString();
 
@@ -186,10 +213,14 @@ public partial class FormMain : Form
 
 		this.listView1.Items.Clear();
 
-		if (this.server == null)
+		if (this.treeView1.SelectedNode == null || this.treeView1.SelectedNode.Parent == null)
 			return;
 
-		var kvs = await this.server.ConfigGetAsync("*");
+
+		if (this.treeView1.SelectedNode.Parent.Tag is not ConnectionPoint connectionNode || connectionNode.Server == null)
+			return;
+
+		var kvs = await connectionNode.Server.ConfigGetAsync("*");
 
 		foreach (var item in kvs)
 		{
@@ -204,10 +235,14 @@ public partial class FormMain : Form
 
 		this.listView1.Items.Clear();
 
-		if (this.server == null)
+		if (this.treeView1.SelectedNode == null || this.treeView1.SelectedNode.Parent == null)
 			return;
 
-		var groups = await this.server.InfoAsync();
+
+		if (this.treeView1.SelectedNode.Parent.Tag is not ConnectionPoint connectionNode || connectionNode.Server == null)
+			return;
+
+		var groups = await connectionNode.Server.InfoAsync();
 
 		foreach (var group in groups)
 		{
@@ -251,12 +286,21 @@ public partial class FormMain : Form
 
 	async private void CloseConnectionToolStripMenuItem_Click(object sender, EventArgs e)
 	{
+		if (this.treeView1.SelectedNode == null)
+			return;
+
+
+		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionNode)
+			return;
+
+		if (connectionNode.Connection != null)
+			await connectionNode.Connection.CloseAsync();
+
+		connectionNode.Db = null;
+		connectionNode.Server = null;
+		connectionNode.Connection = null;
+
 		this.treeView1.SelectedNode.Remove();
-		this.db = null;
-		this.server = null;
-		if (this.connection != null)
-			await this.connection.CloseAsync();
-		this.connection = null;
 	}
 
 	private void ListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -284,36 +328,31 @@ public partial class FormMain : Form
 
 	private async void Timer_Tick(object sender, EventArgs e)
 	{
-		if (this.server == null)
-			return;
-
-		this.toolStripStatusLabel1.Image = Resources.green;
-
 		await SearchAsync();
-
-		this.toolStripStatusLabel1.Image = Resources.blue;
 	}
 
 	private async Task SearchAsync()
 	{
-		if (this.server == null)
-			return;
-
 		var strSearch = this.txtSearch.Text.Trim();
 
 		_ = int.TryParse(this.txtMaxKeys.Text, out int PageSize);
 
-		IAsyncEnumerator<RedisKey> keysAsync = this.server
-		.KeysAsync(pattern: $"*{strSearch}*", pageSize: PageSize)
-		.GetAsyncEnumerator();
-		List<RedisKey> keys = [];
-		while (await keysAsync.MoveNextAsync())
-		{
-			keys.Add(keysAsync.Current);
-		}
-
 		foreach (TreeNode connectionNode in this.treeView1.Nodes)
 		{
+			if (connectionNode.Tag is not ConnectionPoint connectionPoint || connectionPoint.Server == null)
+				continue;
+
+			IAsyncEnumerator<RedisKey> keysAsync = connectionPoint
+				.Server
+				.KeysAsync(pattern: $"*{strSearch}*", pageSize: PageSize)
+				.GetAsyncEnumerator();
+
+			List<RedisKey> keys = [];
+			while (await keysAsync.MoveNextAsync())
+			{
+				keys.Add(keysAsync.Current);
+			}
+
 			for (int j = connectionNode.Nodes.Count - 1; j >= 0; j--)
 			{
 				TreeNode keyNode = connectionNode.Nodes[j];
@@ -343,10 +382,11 @@ public partial class FormMain : Form
 
 	private async void DeleteKeyToolStripMenuItem_Click(object sender, EventArgs e)
 	{
-		if (this.db == null)
+		if (this.treeView1.SelectedNode == null)
 			return;
 
-		if (this.treeView1.SelectedNode == null)
+
+		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionPoint || connectionPoint.Db == null)
 			return;
 
 		var key = this.treeView1.SelectedNode.Text;
@@ -355,14 +395,29 @@ public partial class FormMain : Form
 
 		if (result == DialogResult.OK)
 		{
-
-			await this.db.KeyDeleteAsync(new RedisKey(key));
+			await connectionPoint.Db.KeyDeleteAsync(new RedisKey(key));
 
 			this.treeView1.SelectedNode.Remove();
 
 			this.listView1.Items.Clear();
 		}
-
 	}
 
+	private void FileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+	{
+		this.toolStripMenuItem1.DropDownItems.Clear();
+
+		List<string> connectionStrings = configuration
+				.GetSection("AppSettings:ConnectionStrings")
+				.Get<List<string>>() ?? [];
+		this.toolStripMenuItem1.DropDownItems.AddRange(connectionStrings.Select(x => new ToolStripMenuItem(x)).ToArray());
+	}
+
+	private async void ToolStripMenuItem1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+	{
+		var connectionString = e.ClickedItem?.Text;
+		if (connectionString == null)
+			return;
+		await MakeConnectionAsync(connectionString);
+	}
 }

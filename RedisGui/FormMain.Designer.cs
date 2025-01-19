@@ -31,6 +31,8 @@
 			components = new System.ComponentModel.Container();
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
+			toolStripMenuItem1 = new ToolStripMenuItem();
+			toolStripSeparator2 = new ToolStripSeparator();
 			exitToolStripMenuItem = new ToolStripMenuItem();
 			statusStrip1 = new StatusStrip();
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
@@ -86,15 +88,28 @@
 			// 
 			// fileToolStripMenuItem
 			// 
-			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
+			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripSeparator2, exitToolStripMenuItem });
 			fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			fileToolStripMenuItem.Size = new Size(37, 20);
 			fileToolStripMenuItem.Text = "File";
+			fileToolStripMenuItem.DropDownOpening += FileToolStripMenuItem_DropDownOpening;
+			// 
+			// toolStripMenuItem1
+			// 
+			toolStripMenuItem1.Name = "toolStripMenuItem1";
+			toolStripMenuItem1.Size = new Size(180, 22);
+			toolStripMenuItem1.Text = "Connections";
+			toolStripMenuItem1.DropDownItemClicked += ToolStripMenuItem1_DropDownItemClicked;
+			// 
+			// toolStripSeparator2
+			// 
+			toolStripSeparator2.Name = "toolStripSeparator2";
+			toolStripSeparator2.Size = new Size(177, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			exitToolStripMenuItem.Size = new Size(93, 22);
+			exitToolStripMenuItem.Size = new Size(180, 22);
 			exitToolStripMenuItem.Text = "Exit";
 			exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
 			// 
@@ -257,7 +272,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 49);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(679, 248);
+			listView1.Size = new Size(661, 248);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -284,7 +299,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1059, 134);
+			txtData.Size = new Size(1059, 116);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -417,5 +432,7 @@
 		private Label label4;
 		private TextBox txtSearch;
 		private Button button1;
+		private ToolStripSeparator toolStripSeparator2;
+		private ToolStripMenuItem toolStripMenuItem1;
 	}
 }
