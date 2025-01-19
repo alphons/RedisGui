@@ -5,6 +5,7 @@ using StackExchange.Redis;
 using System.Configuration;
 using System.Diagnostics;
 using System.Net;
+using System.Windows.Forms;
 
 namespace RedisGui;
 
@@ -24,9 +25,9 @@ public partial class FormMain : Form
 
 		var connectionStrings = configuration.GetSection("AppSettings:ConnectionStrings").Get<string[]>();
 
-		if(connectionStrings != null)
-			connections = connectionStrings.Select(x => new ConnectionPoint {  ConnectionString = x }).ToList();
-		
+		if (connectionStrings != null)
+			connections = connectionStrings.Select(x => new ConnectionPoint { ConnectionString = x }).ToList();
+
 		this.imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.World, 24));
 		this.imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.NetworkConnect, 24));
 		this.imageList1.Images.Add(SystemIcons.GetStockIcon(StockIconId.Key, 24));
@@ -59,7 +60,7 @@ public partial class FormMain : Form
 		{
 			connectionPoint.Connection = await ConnectionMultiplexer.ConnectAsync(ConnectionString, x => x.AllowAdmin = true);
 		}
-		catch(RedisConnectionException)
+		catch (RedisConnectionException)
 		{
 			return;
 		}
@@ -386,7 +387,7 @@ public partial class FormMain : Form
 			return;
 
 
-		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionPoint || connectionPoint.Db == null)
+		if (this.treeView1.SelectedNode.Parent.Tag is not ConnectionPoint connectionPoint || connectionPoint.Db == null)
 			return;
 
 		var key = this.treeView1.SelectedNode.Text;
@@ -401,6 +402,22 @@ public partial class FormMain : Form
 
 			this.listView1.Items.Clear();
 		}
+	}
+
+	private async void AddKeytoolStripMenuItem_Click(object sender, EventArgs e)
+	{
+		if (this.treeView1.SelectedNode == null)
+			return;
+
+
+		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionPoint || connectionPoint.Db == null)
+			return;
+
+		var text = "test123";
+
+		await connectionPoint.Db.SetAddAsync("alphons" , text);
+
+		this.treeView1.SelectedNode.Nodes.Add(text);
 	}
 
 	private void FileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
@@ -420,4 +437,6 @@ public partial class FormMain : Form
 			return;
 		await MakeConnectionAsync(connectionString);
 	}
+
+	
 }

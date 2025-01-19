@@ -63,6 +63,8 @@
 			timer1 = new System.Windows.Forms.Timer(components);
 			contextMenuStrip3 = new ContextMenuStrip(components);
 			deleteKeyToolStripMenuItem = new ToolStripMenuItem();
+			toolStripSeparator3 = new ToolStripSeparator();
+			toolStripMenuItem2 = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -273,7 +275,7 @@
 			listView1.GridLines = true;
 			listView1.Location = new Point(12, 49);
 			listView1.Name = "listView1";
-			listView1.Size = new Size(649, 248);
+			listView1.Size = new Size(679, 248);
 			listView1.TabIndex = 0;
 			listView1.UseCompatibleStateImageBehavior = false;
 			listView1.View = View.Details;
@@ -300,7 +302,7 @@
 			txtData.Name = "txtData";
 			txtData.ReadOnly = true;
 			txtData.ScrollBars = ScrollBars.Both;
-			txtData.Size = new Size(1059, 104);
+			txtData.Size = new Size(1059, 92);
 			txtData.TabIndex = 5;
 			// 
 			// contextMenuStrip1
@@ -318,9 +320,9 @@
 			// 
 			// contextMenuStrip2
 			// 
-			contextMenuStrip2.Items.AddRange(new ToolStripItem[] { showInformationToolStripMenuItem, showConfigurationToolStripMenuItem, toolStripSeparator1, closeConnectionToolStripMenuItem });
+			contextMenuStrip2.Items.AddRange(new ToolStripItem[] { showInformationToolStripMenuItem, showConfigurationToolStripMenuItem, toolStripSeparator1, toolStripMenuItem2, toolStripSeparator3, closeConnectionToolStripMenuItem });
 			contextMenuStrip2.Name = "contextMenuStrip2";
-			contextMenuStrip2.Size = new Size(181, 76);
+			contextMenuStrip2.Size = new Size(181, 126);
 			// 
 			// showInformationToolStripMenuItem
 			// 
@@ -365,6 +367,18 @@
 			deleteKeyToolStripMenuItem.Size = new Size(129, 22);
 			deleteKeyToolStripMenuItem.Text = "Delete Key";
 			deleteKeyToolStripMenuItem.Click += DeleteKeyToolStripMenuItem_Click;
+			// 
+			// toolStripSeparator3
+			// 
+			toolStripSeparator3.Name = "toolStripSeparator3";
+			toolStripSeparator3.Size = new Size(177, 6);
+			// 
+			// toolStripMenuItem2
+			// 
+			toolStripMenuItem2.Name = "toolStripMenuItem2";
+			toolStripMenuItem2.Size = new Size(180, 22);
+			toolStripMenuItem2.Text = "Add Key...";
+			toolStripMenuItem2.Click += AddKeytoolStripMenuItem_Click;
 			// 
 			// FormMain
 			// 
@@ -436,5 +450,7 @@
 		private Button button1;
 		private ToolStripSeparator toolStripSeparator2;
 		private ToolStripMenuItem toolStripMenuItem1;
+		private ToolStripMenuItem toolStripMenuItem2;
+		private ToolStripSeparator toolStripSeparator3;
 	}
 }
