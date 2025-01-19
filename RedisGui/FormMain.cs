@@ -168,7 +168,6 @@ public partial class FormMain : Form
 								{
 									if (entry.Value.Box() is byte[] buffer)
 									{
-										//this.txtData.Text = Helper.ConvertByteArrayToHexText(buffer);
 										Helper.SessionDecoder(this.listView1, name, buffer);
 										continue;
 									}
@@ -413,11 +412,24 @@ public partial class FormMain : Form
 		if (this.treeView1.SelectedNode.Tag is not ConnectionPoint connectionPoint || connectionPoint.Db == null)
 			return;
 
-		var text = "test123";
+		var form = new AddKeyForm();
 
-		await connectionPoint.Db.SetAddAsync("alphons" , text);
+		if(form.ShowDialog(this) == DialogResult.OK)
+		{
+			var KeyType = form.KeyType; // string. array etc...
 
-		this.treeView1.SelectedNode.Nodes.Add(text);
+			var KeyValue = form.KeyValue;
+
+			var KeyName = form.KeyName;
+
+			await connectionPoint.Db.SetAddAsync(KeyName, KeyValue);
+
+			var treeNode = this.treeView1.SelectedNode.Nodes.Add(null, KeyValue, 2, 2);
+
+			this.treeView1.SelectedNode = treeNode;
+		}
+
+		form.Dispose();
 	}
 
 	private void FileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
